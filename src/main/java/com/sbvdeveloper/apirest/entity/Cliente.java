@@ -10,6 +10,20 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
+/**
+ * Vamos a utilizar API Java Bean Validation: Especificación JSR-380 Este como
+ * lo utilizamos en spring funciona de manera interna tener presente tener la
+ * implementacion en el pom
+ * 
+ * 
+ * @author rizzoli
+ *
+ */
+
 @Entity
 @Table(name = "clientes")
 public class Cliente implements Serializable {
@@ -17,15 +31,21 @@ public class Cliente implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	//para que no se pueda enviar vacio
-	@Column(nullable = false)
+
+	@NotEmpty(message = "no puede estar vacio")
+	@Size(min = 4, max = 12, message = "el tamaño debe de estar entre 4 y 12")
+	@Column(nullable = false) // para que no se pueda enviar vacio sobre la db
 	private String nombre;
+
+	@NotEmpty(message = "no puede estar vacio")
 	private String apellido;
-	//para que no se pueda enviar vacio, ni poder repetir correo
-	@Column(nullable = false, unique = true)
+
+	@NotEmpty(message = "no puede estar vacio")
+	@Email(message = "no es una dirección de correo bien formada")
+	@Column(nullable = false, unique = true) // para que no se pueda enviar vacio, ni poder repetir correo sobre la db
 	private String email;
-	// Nuevos valores de Java8 en adelante
-	private LocalDateTime fecha;
+
+	private LocalDateTime fecha;// Nuevos valores de Java8 en adelante
 
 	public Long getId() {
 		return id;

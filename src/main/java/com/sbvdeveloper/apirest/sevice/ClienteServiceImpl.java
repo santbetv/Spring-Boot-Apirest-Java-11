@@ -3,6 +3,8 @@ package com.sbvdeveloper.apirest.sevice;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +23,14 @@ public class ClienteServiceImpl implements IClienteService {
 
 		return clienteRepository.findAll();
 	}
+	
+	@Override
+	@Transactional(readOnly = true)//
+	public Page<Cliente> findAll(Pageable s) {
+		
+		return clienteRepository.findAll(s);
+	}
+	
 
 	// Transactional de lectura
 	@Override
@@ -43,5 +53,8 @@ public class ClienteServiceImpl implements IClienteService {
 		clienteRepository.deleteById(id);
 		
 	}
+
+	
+	
 
 }

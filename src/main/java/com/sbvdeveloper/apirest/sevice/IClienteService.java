@@ -2,6 +2,9 @@ package com.sbvdeveloper.apirest.sevice;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.sbvdeveloper.apirest.entity.Cliente;
 
 //Contrato del CRUD
@@ -9,10 +12,14 @@ public interface IClienteService {
 
 	public List<Cliente> findAll();
 	
-	public Cliente findById(Long id);
+	public Page<Cliente> findAll(Pageable s);
+	
+	public Cliente findById(Long id);	
 	
 	public Cliente save(Cliente cliente);
 	
 	public void delete(Long id);
+	
+	
 	
 }

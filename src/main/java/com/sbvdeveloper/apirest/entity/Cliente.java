@@ -47,6 +47,8 @@ public class Cliente implements Serializable {
 
 	private LocalDateTime fecha;// Nuevos valores de Java8 en adelante
 
+	private String foto;
+	
 	public Long getId() {
 		return id;
 	}
@@ -87,11 +89,25 @@ public class Cliente implements Serializable {
 		this.fecha = fecha;
 	}
 
+	
+	
+	public String getFoto() {
+		return foto;
+	}
+
+	public void setFoto(String foto) {
+		this.foto = foto;
+	}
+
+	
+
 	@Override
 	public String toString() {
 		return "Cliente [id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", email=" + email + ", fecha="
-				+ fecha + "]";
+				+ fecha + ", foto=" + foto + "]";
 	}
+
+
 
 	/**
 	 * 

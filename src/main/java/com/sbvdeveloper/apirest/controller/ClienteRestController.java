@@ -1,10 +1,15 @@
 package com.sbvdeveloper.apirest.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.naming.Binding;
@@ -28,7 +33,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sbvdeveloper.apirest.entity.Cliente;
 import com.sbvdeveloper.apirest.sevice.IClienteService;
@@ -141,7 +148,7 @@ public class ClienteRestController {
 		Cliente clienteUpdate = null;
 		Map<String, Object> datos = new HashMap<>();
 
-		// Porceso para validar atriputos en peticion
+		// Porceso para validar atributos en peticion
 		if (result.hasErrors()) {
 			/*
 			 * List<String> errors = new ArrayList<>();
@@ -205,5 +212,41 @@ public class ClienteRestController {
 		datos.put("mensaje", "el cliente ha sido eliminado con éxito!");
 
 		return new ResponseEntity<Map<String, Object>>(datos, HttpStatus.OK);
+	}
+	
+	
+	@PostMapping("/clientes/upload")
+	public ResponseEntity<?> subirImagen(@RequestParam("archivo") MultipartFile archivo, 
+			@RequestParam("id") Long id){
+		
+		Map<String, Object> datos = new HashMap<>();
+		
+		Cliente cliente = clienteService.findById(id);
+		
+		Cliente clienteUpdate = null;
+		
+		if (!archivo.isEmpty()) {
+			//Se concatena con clase random para asegurar img
+			String nombreArchivo = UUID.randomUUID().toString() +"_"+ archivo.getOriginalFilename().replace(" ", "");
+			Path rutaArchivo = Paths.get("src/main/resources/upload").resolve(nombreArchivo).toAbsolutePath();
+			
+			try {
+				Files.copy(archivo.getInputStream(), rutaArchivo);
+			} catch (IOException e) {
+				datos.put("mensaje", "Error al subir la imagen del cliente  " + nombreArchivo);
+				datos.put("error", e.getMessage().concat(": ").concat(e.getCause().getMessage()));
+				return new ResponseEntity<Map<String, Object>>(datos, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+			
+			cliente.setFoto(nombreArchivo);
+			
+			clienteUpdate = clienteService.save(cliente);
+			
+			datos.put("cliente", clienteUpdate);
+			datos.put("mensaje", "Has subido correctamente la imagen: " + nombreArchivo);
+			
+		}
+		
+		return new ResponseEntity<Map<String, Object>>(datos, HttpStatus.CREATED);
 	}
 }

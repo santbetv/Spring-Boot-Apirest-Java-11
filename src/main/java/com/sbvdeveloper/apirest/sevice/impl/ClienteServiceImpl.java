@@ -1,4 +1,4 @@
-package com.sbvdeveloper.apirest.sevice;
+package com.sbvdeveloper.apirest.sevice.impl;
 
 import java.util.List;
 
@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sbvdeveloper.apirest.entity.Cliente;
 import com.sbvdeveloper.apirest.repository.IClienteRepository;
+import com.sbvdeveloper.apirest.sevice.IClienteService;
 
 @Service
 public class ClienteServiceImpl implements IClienteService {

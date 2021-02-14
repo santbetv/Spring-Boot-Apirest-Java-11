@@ -1,30 +1,33 @@
 package com.sbvdeveloper.apirest.controller;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import javax.naming.Binding;
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,20 +35,22 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sbvdeveloper.apirest.entity.Cliente;
 import com.sbvdeveloper.apirest.sevice.IClienteService;
+import com.sbvdeveloper.apirest.sevice.IProcesarImagen;
 
 //@CrossOrigin(origins = {"http://localhost:4200"})
-@CrossOrigin(methods = { RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.GET })
+//@CrossOrigin(methods = { RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.GET })
 @RestController
 @RequestMapping("/api")
 public class ClienteRestController {
 
+	
+	
 	/**
 	 * Cuando se declara con tipo generico interface o abstrac va a buscar el primer
 	 * candidato, una clase concreta que implemente esta interface y la va inyectar,
@@ -55,12 +60,15 @@ public class ClienteRestController {
 	 */
 	@Autowired
 	IClienteService clienteService;
+	
+	@Autowired
+	IProcesarImagen imagenService;
 
 	@GetMapping("/clientes")
 	public List<Cliente> index() {
 		return clienteService.findAll();
 	}
-	
+
 	@GetMapping("/clientes/page/{page}")
 	public Page<Cliente> paginadorWeb(@PathVariable Integer page) {
 		Pageable pegeable = PageRequest.of(page, 4);
@@ -200,6 +208,10 @@ public class ClienteRestController {
 		Map<String, Object> datos = new HashMap<>();
 
 		try {
+			Cliente cliente = clienteService.findById(id);
+			String nombreFotoAnterior = cliente.getFoto();
+
+			imagenService.eliminarImagen(nombreFotoAnterior);
 
 			clienteService.delete(id);
 			// Exception que permite utilizada de getMostSpecificCause
@@ -213,40 +225,68 @@ public class ClienteRestController {
 
 		return new ResponseEntity<Map<String, Object>>(datos, HttpStatus.OK);
 	}
-	
-	
+
 	@PostMapping("/clientes/upload")
-	public ResponseEntity<?> subirImagen(@RequestParam("archivo") MultipartFile archivo, 
-			@RequestParam("id") Long id){
-		
+	public ResponseEntity<?> subirImagen(@RequestParam("archivo") MultipartFile archivo, @RequestParam("id") Long id) {
+
 		Map<String, Object> datos = new HashMap<>();
-		
+
 		Cliente cliente = clienteService.findById(id);
-		
-		Cliente clienteUpdate = null;
-		
+
+		// Cliente actulizandoRutaFoto = null;
+
 		if (!archivo.isEmpty()) {
-			//Se concatena con clase random para asegurar img
-			String nombreArchivo = UUID.randomUUID().toString() +"_"+ archivo.getOriginalFilename().replace(" ", "");
-			Path rutaArchivo = Paths.get("src/main/resources/upload").resolve(nombreArchivo).toAbsolutePath();
+			// Se concatena con clase random para asegurar img
+			
+			String nombreArchivo = null;
 			
 			try {
-				Files.copy(archivo.getInputStream(), rutaArchivo);
+				nombreArchivo = imagenService.copiarImagen(archivo);
 			} catch (IOException e) {
-				datos.put("mensaje", "Error al subir la imagen del cliente  " + nombreArchivo);
+				datos.put("mensaje", "Error al subir la imagen del cliente  ");
 				datos.put("error", e.getMessage().concat(": ").concat(e.getCause().getMessage()));
 				return new ResponseEntity<Map<String, Object>>(datos, HttpStatus.INTERNAL_SERVER_ERROR);
 			}
-			
+
+			String nombreFotoAnterior = cliente.getFoto();
+
+			imagenService.eliminarImagen(nombreFotoAnterior);
+
 			cliente.setFoto(nombreArchivo);
-			
-			clienteUpdate = clienteService.save(cliente);
-			
-			datos.put("cliente", clienteUpdate);
+
+			// actulizandoRutaFoto = clienteService.save(cliente);
+			clienteService.save(cliente);
+
+			datos.put("cliente", cliente);
 			datos.put("mensaje", "Has subido correctamente la imagen: " + nombreArchivo);
-			
+
 		}
-		
+
 		return new ResponseEntity<Map<String, Object>>(datos, HttpStatus.CREATED);
 	}
+
+	// indicamos con expresion regular que va con una extension
+	@GetMapping("/uploads/img/{nombreFoto:.+}")
+	public ResponseEntity<Resource> verFoto(@PathVariable String nombreFoto) {
+
+		Resource recurso = null;
+		
+		try {
+			recurso = imagenService.cargarImagen(nombreFoto);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// forzar descarga
+		HttpHeaders cabecera = new HttpHeaders();
+
+		// aributo para forzar descarga de imagen
+		cabecera.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + recurso.getFilename() + "\"");
+
+		return new ResponseEntity<Resource>(recurso,cabecera, HttpStatus.OK);
+	}
+	
+	
+
 }

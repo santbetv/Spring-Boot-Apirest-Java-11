@@ -1,25 +1,17 @@
 package com.sbvdeveloper.apirest.controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -40,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sbvdeveloper.apirest.entity.Cliente;
+import com.sbvdeveloper.apirest.entity.Region;
 import com.sbvdeveloper.apirest.sevice.IClienteService;
 import com.sbvdeveloper.apirest.sevice.IProcesarImagen;
 
@@ -184,6 +177,7 @@ public class ClienteRestController {
 			clienteBuscado.setNombre(cliente.getNombre());
 			clienteBuscado.setEmail(cliente.getEmail());
 			clienteBuscado.setFecha(cliente.getFecha());
+			clienteBuscado.setRegion(cliente.getRegion());
 
 			clienteUpdate = clienteService.save(clienteBuscado);
 			// Exception que permite utilizada de getMostSpecificCause
@@ -285,6 +279,11 @@ public class ClienteRestController {
 		cabecera.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + recurso.getFilename() + "\"");
 
 		return new ResponseEntity<Resource>(recurso,cabecera, HttpStatus.OK);
+	}
+	
+	@GetMapping("/clientes/regiones")
+	public List<Region>	 listarRegiones() {
+		return clienteService.findAllRegiones();
 	}
 	
 	

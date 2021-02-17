@@ -1,17 +1,24 @@
 -- Por defecto Spring data jpa o mejor Hibernate lo ejecuta
-INSERT INTO clientes (nombre, apellido, email, fecha) VALUES('santiago1', 'betancur','santiago1@hotmail.com', NOW());
-INSERT INTO clientes (nombre, apellido, email, fecha) VALUES('jose1', 'betan','jose1@hotmail.com', NOW());
-INSERT INTO clientes (nombre, apellido, email, fecha) VALUES('santiago2', 'betancur','santiago2@hotmail.com', NOW());
-INSERT INTO clientes (nombre, apellido, email, fecha) VALUES('jose2', 'betan','jose2@hotmail.com', NOW());
-INSERT INTO clientes (nombre, apellido, email, fecha) VALUES('santiago3', 'betancur','santiago3@hotmail.com', NOW());
-INSERT INTO clientes (nombre, apellido, email, fecha) VALUES('jose3', 'betan','jose3@hotmail.com', NOW());
-INSERT INTO clientes (nombre, apellido, email, fecha) VALUES('santiago4', 'betancur','santiago4@hotmail.com', NOW());
-INSERT INTO clientes (nombre, apellido, email, fecha) VALUES('jose4', 'betan','jose4@hotmail.com', NOW());
-INSERT INTO clientes (nombre, apellido, email, fecha) VALUES('santiago5', 'betancur','santiago5@hotmail.com', NOW());
-INSERT INTO clientes (nombre, apellido, email, fecha) VALUES('jose5', 'betan','jose5@hotmail.com', NOW());
-INSERT INTO clientes (nombre, apellido, email, fecha) VALUES('santiago6', 'betancur','santiago6@hotmail.com', NOW());
-INSERT INTO clientes (nombre, apellido, email, fecha) VALUES('jose6', 'betan','jose6@hotmail.com', NOW());
-INSERT INTO clientes (nombre, apellido, email, fecha) VALUES('santiago7', 'betancur','santiago7@hotmail.com', NOW());
-INSERT INTO clientes (nombre, apellido, email, fecha) VALUES('jose7', 'betan','jose7@hotmail.com', NOW());
-INSERT INTO clientes (nombre, apellido, email, fecha) VALUES('santiago8', 'betancur','santiago8@hotmail.com', NOW());
-INSERT INTO clientes (nombre, apellido, email, fecha) VALUES('jose8', 'betan','jose8@hotmail.com', NOW());
+-- INSERT INTO clientes (nombre, apellido, email, fecha) VALUES('santiago1', 'betancur','santiago1@hotmail.com', NOW());
+
+INSERT INTO regiones (id, nombre) VALUES (1, 'Sudamérica');
+INSERT INTO regiones (id, nombre) VALUES (2, 'Centroamérica');
+INSERT INTO regiones (id, nombre) VALUES (3, 'Norteamérica');
+INSERT INTO regiones (id, nombre) VALUES (4, 'Europa');
+INSERT INTO regiones (id, nombre) VALUES (5, 'Asia');
+INSERT INTO regiones (id, nombre) VALUES (6, 'Africa');
+INSERT INTO regiones (id, nombre) VALUES (7, 'Oceanía');
+INSERT INTO regiones (id, nombre) VALUES (8, 'Antártida');
+
+INSERT INTO clientes (region_id, nombre, apellido, email, fecha) VALUES(1, 'Andrés', 'Guzmán', 'profesor@bolsadeideas.com', NOW());
+INSERT INTO clientes (region_id, nombre, apellido, email, fecha) VALUES(2, 'Mr. John', 'Doe', 'john.doe@gmail.com', NOW());
+INSERT INTO clientes (region_id, nombre, apellido, email, fecha) VALUES(4, 'Linus', 'Torvalds', 'linus.torvalds@gmail.com', NOW());
+INSERT INTO clientes (region_id, nombre, apellido, email, fecha) VALUES(4, 'Rasmus', 'Lerdorf', 'rasmus.lerdorf@gmail.com', NOW());
+INSERT INTO clientes (region_id, nombre, apellido, email, fecha) VALUES(4, 'Erich', 'Gamma', 'erich.gamma@gmail.com', NOW());
+INSERT INTO clientes (region_id, nombre, apellido, email, fecha) VALUES(3, 'Richard', 'Helm', 'richard.helm@gmail.com', NOW());
+INSERT INTO clientes (region_id, nombre, apellido, email, fecha) VALUES(3, 'Ralph', 'Johnson', 'ralph.johnson@gmail.com', NOW());
+INSERT INTO clientes (region_id, nombre, apellido, email, fecha) VALUES(3, 'John', 'Vlissides', 'john.vlissides@gmail.com', NOW());
+INSERT INTO clientes (region_id, nombre, apellido, email, fecha) VALUES(3, 'Dr. James', 'Gosling', 'james.gosling@gmail.com', NOW());
+INSERT INTO clientes (region_id, nombre, apellido, email, fecha) VALUES(5, 'Magma', 'Lee', 'magma.lee@gmail.com', NOW());
+INSERT INTO clientes (region_id, nombre, apellido, email, fecha) VALUES(6, 'Tornado', 'Roe', 'tornado.roe@gmail.com', NOW());
+INSERT INTO clientes (region_id, nombre, apellido, email, fecha) VALUES(7, 'Jade', 'Doe', 'jane.doe@gmail.com', NOW());

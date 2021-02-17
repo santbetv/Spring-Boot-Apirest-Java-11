@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.sbvdeveloper.apirest.entity.Cliente;
+import com.sbvdeveloper.apirest.entity.Region;
 
 //Contrato del CRUD
 public interface IClienteService {
@@ -19,6 +20,8 @@ public interface IClienteService {
 	public Cliente save(Cliente cliente);
 	
 	public void delete(Long id);
+	
+	public List<Region> findAllRegiones();
 	
 	
 	

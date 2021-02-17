@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sbvdeveloper.apirest.entity.Cliente;
+import com.sbvdeveloper.apirest.entity.Region;
 import com.sbvdeveloper.apirest.repository.IClienteRepository;
 import com.sbvdeveloper.apirest.sevice.IClienteService;
 
@@ -23,7 +24,7 @@ public class ClienteServiceImpl implements IClienteService {
 	public List<Cliente> findAll() {
 
 		return clienteRepository.findAll();
-	}
+	} 
 	
 	@Override
 	@Transactional(readOnly = true)//
@@ -55,6 +56,13 @@ public class ClienteServiceImpl implements IClienteService {
 		
 	}
 
+	@Override
+	@Transactional(readOnly = true)//
+	public List<Region> findAllRegiones() {
+		
+		return clienteRepository.findAllRegiones();
+	}
+	
 	
 	
 

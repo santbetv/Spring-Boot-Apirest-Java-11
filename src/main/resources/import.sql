@@ -22,3 +22,15 @@ INSERT INTO clientes (region_id, nombre, apellido, email, fecha) VALUES(3, 'Dr. 
 INSERT INTO clientes (region_id, nombre, apellido, email, fecha) VALUES(5, 'Magma', 'Lee', 'magma.lee@gmail.com', NOW());
 INSERT INTO clientes (region_id, nombre, apellido, email, fecha) VALUES(6, 'Tornado', 'Roe', 'tornado.roe@gmail.com', NOW());
 INSERT INTO clientes (region_id, nombre, apellido, email, fecha) VALUES(7, 'Jade', 'Doe', 'jane.doe@gmail.com', NOW());
+
+/* Creamos algunos usuarios con sus roles */
+INSERT INTO `usuarios` (username, password, enabled) VALUES ('santiago','',1);
+INSERT INTO `usuarios` (username, password, enabled) VALUES ('admin','',1);
+
+-- siempre colocar el prefijo ROLE_
+INSERT INTO `roles` (nombre) VALUES ('ROLE_USER');
+INSERT INTO `roles` (nombre) VALUES ('ROLE_ADMIN');
+
+INSERT INTO `usuarios_roles` (usuario_id, role_id) VALUES (1, 1);
+INSERT INTO `usuarios_roles` (usuario_id, role_id) VALUES (2, 2);
+INSERT INTO `usuarios_roles` (usuario_id, role_id) VALUES (2, 1);

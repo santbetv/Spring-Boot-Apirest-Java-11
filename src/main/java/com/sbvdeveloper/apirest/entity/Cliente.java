@@ -67,9 +67,10 @@ public class Cliente implements Serializable {
 	 * su comunicacion (proxy)
 	 * 
 	 */
-	@NotNull(message ="no puede estar vacio")
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "region_id")
+	
+	@NotNull(message="la región no puede ser vacia")
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="region_id")
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private Region region;
 	

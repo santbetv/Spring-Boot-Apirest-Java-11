@@ -22,7 +22,7 @@ public class CORSFilter {
 		config.addAllowedMethod("PUT");
 		config.addAllowedMethod("DELETE");
 		source.registerCorsConfiguration("/**", config);
-		System.out.println("PETICION CORS --> " + config.toString());
+		System.out.println("PETICION CORS -->");
 		return new CorsFilter(source);
 
 	}

@@ -70,7 +70,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		 */
 		// duplicar este si es desde otra app react, vue, movil ... etc
 		clients.inMemory().withClient("angularapp").secret(passwordEncoder.encode("12345")).scopes("read", "write")
-				.authorizedGrantTypes("password", "refresh_token").accessTokenValiditySeconds(3600*24)
+				.authorizedGrantTypes("password", "refresh_token").accessTokenValiditySeconds(3600 * 24)
 				.refreshTokenValiditySeconds(3600);
 	}
 
@@ -85,7 +85,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	 */
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-		
+
 		endpoints.authenticationManager(authenticationManager).tokenStore(tokenStore())
 				.accessTokenConverter(accessTokenConverter());
 	}
@@ -99,8 +99,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	/**
 	 * 
 	 * Se crea metodo desde linea configure(AuthorizationServerEndpointsConfigurer
-	 * endpoints) Este metodo trabaja por debajo copn toda la implentacion de JWT
-	 * para dodificar y decodificar los datos
+	 * endpoints) Este metodo trabaja por debajo con toda la implentacion de JWT
+	 * para codificar y decodificar los datos, siendo el firmante del token con
+	 * certificado RSA
 	 * 
 	 * @return
 	 */
@@ -108,7 +109,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	public JwtAccessTokenConverter accessTokenConverter() {
 
 		JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
-
+		jwtAccessTokenConverter.setSigningKey(JwtConfig.RSA_PRIVADA_UBU);
+		jwtAccessTokenConverter.setVerifierKey(JwtConfig.RSA_PUBLICA_UBU);
 		return jwtAccessTokenConverter;
 	}
 

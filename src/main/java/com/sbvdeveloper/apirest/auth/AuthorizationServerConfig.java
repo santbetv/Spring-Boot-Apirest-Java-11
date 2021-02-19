@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 /**
+ * Segunda
  * 
  * Clase de configuracion para OAuth2 y JWT
  * 
@@ -36,7 +37,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	private AuthenticationManager authenticationManager;
 
 	/**
-	 * Configuracion para permisos de endpoint oauth/token y generarlo, despues verificar su token y su firma
+	 * Configuracion para permisos de endpoint oauth/token y generarlo, despues
+	 * verificar su token y su firma
 	 * 
 	 */
 	@Override
@@ -60,14 +62,15 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		/**
 		 * tipo de almacenamiento inMemory, se le pasa el nombre de tipo de app username
 		 * pero de la aplicacion, se le pasa la contraseña de la app, se le pasa los
-		 * permisos, se le pasa tipo de autorizacion por usuario y contra mas refresh_token un token renovado, 
-		 * pasar cuanto queremos que dure el token en segundos tanto para el normal como el refresh 
+		 * permisos, se le pasa tipo de autorizacion por usuario y contra mas
+		 * refresh_token un token renovado, pasar cuanto queremos que dure el token en
+		 * segundos tanto para el normal como el refresh
 		 * 
 		 * 
 		 */
-		//duplicar este si es desde otra app react, vue, movil ... etc
-		clients.inMemory().withClient("angularapp").secret(passwordEncoder.encode("9876")).scopes("read", "write")
-				.authorizedGrantTypes("password", "refresh_token").accessTokenValiditySeconds(3600 * 24)
+		// duplicar este si es desde otra app react, vue, movil ... etc
+		clients.inMemory().withClient("angularapp").secret(passwordEncoder.encode("12345")).scopes("read", "write")
+				.authorizedGrantTypes("password", "refresh_token").accessTokenValiditySeconds(3600*24)
 				.refreshTokenValiditySeconds(3600);
 	}
 
@@ -82,7 +85,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	 */
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-
+		
 		endpoints.authenticationManager(authenticationManager).tokenStore(tokenStore())
 				.accessTokenConverter(accessTokenConverter());
 	}

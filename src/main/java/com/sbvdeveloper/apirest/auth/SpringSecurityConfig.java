@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
- * 
+ * primera
  * Una configuracion de spring para autenticacion
  * 
  * @author rizzoli
@@ -39,7 +39,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	/**
 	 * 
-	 * Metodo que me permite configurar el el usuario tambien configurar
+	 * Metodo que me permite configurar el usuario tambien configurar
 	 * codificacion de password
 	 * 
 	 */
@@ -56,7 +56,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	/**
-	 * Seguridad por el lado de Spring Poder activar desactivar CSRF = Cross-site
+	 * Seguridad por el lado de Spring, Poder activar desactivar CSRF = Cross-site
 	 * request forgery o falsificacion de peticion en sitios cruzados, ataques,
 	 * adicional dejarlo sin sessiones STATELESS
 	 */

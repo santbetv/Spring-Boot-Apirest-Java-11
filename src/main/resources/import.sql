@@ -24,8 +24,8 @@ INSERT INTO clientes (region_id, nombre, apellido, email, fecha) VALUES(6, 'Torn
 INSERT INTO clientes (region_id, nombre, apellido, email, fecha) VALUES(7, 'Jade', 'Doe', 'jane.doe@gmail.com', NOW());
 
 /* Creamos algunos usuarios con sus roles */
-INSERT INTO `usuarios` (username, password, enabled) VALUES ('santiago','',1);
-INSERT INTO `usuarios` (username, password, enabled) VALUES ('admin','',1);
+INSERT INTO `usuarios` (username, password, enabled) VALUES ('santiago','$2a$10$HImHMwqG0i37e8wa0aueA.lQfQmUR7x7gvZ7K5Ev0ajTOuhL7rQtq',1);
+INSERT INTO `usuarios` (username, password, enabled) VALUES ('admin','$2a$10$8fm0xn/rTxCkd4DejTkZLeFECHGcAoMWqLoV7zDLucSQPI.XPoVd.',1);
 
 -- siempre colocar el prefijo ROLE_
 INSERT INTO `roles` (nombre) VALUES ('ROLE_USER');

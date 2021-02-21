@@ -62,6 +62,15 @@ public class ClienteServiceImpl implements IClienteService {
 		
 		return clienteRepository.findAllRegiones();
 	}
+
+	@Override
+	public Region buscarRegionXId(Long id) {
+		
+		return clienteRepository.buscarRegionXId(id);
+	
+	}
+	
+	
 	
 	
 	

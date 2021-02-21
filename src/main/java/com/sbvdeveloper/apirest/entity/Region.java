@@ -32,9 +32,15 @@ public class Region implements Serializable {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+
+	public Region() {
+	}
 	
 	
-	
+
+	public Region(Long id) {
+		this.id = id;
+	}
 
 	@Override
 	public String toString() {

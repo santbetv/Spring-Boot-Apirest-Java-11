@@ -1,5 +1,8 @@
 package com.sbvdeveloper.apirest.auth;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +14,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
@@ -27,6 +31,9 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
+	@Autowired
+	private InfoAdicionalToken infoAdicionalToken;
+	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
@@ -68,10 +75,18 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		 * 
 		 * 
 		 */
+
 		// duplicar este si es desde otra app react, vue, movil ... etc
 		clients.inMemory().withClient("angularapp").secret(passwordEncoder.encode("12345")).scopes("read", "write")
+				.authorizedGrantTypes("password", "refresh_token").and().withClient("react")
+				.secret(passwordEncoder.encode("12345")).scopes("read", "write")
 				.authorizedGrantTypes("password", "refresh_token").accessTokenValiditySeconds(3600 * 24)
 				.refreshTokenValiditySeconds(3600);
+
+//		clients.inMemory().withClient("fullapp").secret(passwordEncoder.encode("2021")).scopes("read", "write")
+//				.authorizedGrantTypes("password", "refresh_token").accessTokenValiditySeconds(3600 * 24)
+//				.refreshTokenValiditySeconds(3600);
+
 	}
 
 	/**
@@ -86,8 +101,14 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 
+		//Unimos los datos de defectos con los datos nuevos
+		TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+		//accessTokenConverter() retorna el jwt
+		tokenEnhancerChain.setTokenEnhancers(Arrays.asList(infoAdicionalToken, accessTokenConverter()));
+		
+		
 		endpoints.authenticationManager(authenticationManager).tokenStore(tokenStore())
-				.accessTokenConverter(accessTokenConverter());
+				.accessTokenConverter(accessTokenConverter()).tokenEnhancer(tokenEnhancerChain);
 	}
 
 	@Bean
@@ -107,7 +128,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	 */
 	@Bean
 	public JwtAccessTokenConverter accessTokenConverter() {
-
 		JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
 		jwtAccessTokenConverter.setSigningKey(JwtConfig.RSA_PRIVADA_UBU);
 		jwtAccessTokenConverter.setVerifierKey(JwtConfig.RSA_PUBLICA_UBU);

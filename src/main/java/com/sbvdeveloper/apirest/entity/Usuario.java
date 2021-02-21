@@ -15,6 +15,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "usuarios")
@@ -31,6 +34,14 @@ public class Usuario implements Serializable {
 	private String password;
 
 	private Boolean enabled;
+	
+	private String nombre;
+	
+	private String apellido;
+
+	@Column(unique = true) // para que no se pueda enviar vacio, ni poder repetir correo sobre la db
+	private String email;
+	
 
 	/**
 	 * Cada vez que elimine al usuario elimina su rol o roles Cada vez que guarde al
@@ -81,6 +92,32 @@ public class Usuario implements Serializable {
 
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
+	}
+	
+	
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getApellido() {
+		return apellido;
+	}
+
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	@Override

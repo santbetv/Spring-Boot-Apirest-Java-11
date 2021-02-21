@@ -21,7 +21,21 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	 */
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/clientes", "/api/clientes/regiones").permitAll().anyRequest().authenticated();
+		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/clientes", "/api/clientes/page/**", "/api/uploads/img/**").permitAll()
+				.antMatchers(HttpMethod.GET, "/api/clientes/{id}").hasAnyRole("USER","ADMIN")//no requiere rol por debajo se concatena
+				.antMatchers(HttpMethod.POST, "/api/clientes/upload").hasAnyRole("USER","ADMIN")
+				.antMatchers(HttpMethod.POST, "/api/clientes").hasRole("ADMIN")
+				.antMatchers("/api/clientes/**").hasRole("ADMIN")
+				.anyRequest().authenticated();//todas las rutas que no se indiquen, solo para usuarios autenticados
+				//.antMatchers(HttpMethod.POST, "/api/clientes").hasRole("ADMIN")//solo un rol
+				//.antMatchers("/api/clientes/**").hasRole("ADMIN")//sin http se aplica para todos los metodos
 	}
+
+	
+	//Ejemplo simple de petiociones get
+//	@Override
+//	public void configure(HttpSecurity http) throws Exception {
+//		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/clientes", "/api/clientes/regiones").permitAll().anyRequest().authenticated();
+//	}
 
 }

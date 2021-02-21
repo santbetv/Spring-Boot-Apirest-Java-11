@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sbvdeveloper.apirest.entity.Usuario;
 import com.sbvdeveloper.apirest.repository.IUsuarioRepository;
+import com.sbvdeveloper.apirest.sevice.IUsuarioService;
 
 /**
  * Se utiliza interface UserDetailsService para detallar lo que va hacer el
@@ -26,7 +27,7 @@ import com.sbvdeveloper.apirest.repository.IUsuarioRepository;
  *
  */
 @Service
-public class UsuarioServiceImpl implements UserDetailsService {
+public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
 
 	private Logger logger = LoggerFactory.getLogger(UsuarioServiceImpl.class);
 
@@ -52,6 +53,13 @@ public class UsuarioServiceImpl implements UserDetailsService {
 
 		return new User(usuario.getUsername(), usuario.getPassword(), usuario.getEnabled(), true, true, true,
 				authorities);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Usuario findByUsername(String username) {
+		
+		return usuarioRepository.findByUsername(username);
 	}
 
 }

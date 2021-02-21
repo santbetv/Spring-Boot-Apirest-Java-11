@@ -107,6 +107,8 @@ public class ClienteRestController {
 
 		Cliente clienteNew = null;
 		Map<String, Object> datos = new HashMap<>();
+		
+		
 
 		// Porceso para validar atriputos en peticion
 		if (result.hasErrors()) {
@@ -128,6 +130,7 @@ public class ClienteRestController {
 
 		try {
 			cliente.setFecha(LocalDateTime.now());
+			cliente.setRegion(clienteService.buscarRegionXId(cliente.getRegion().getId()));
 			clienteNew = clienteService.save(cliente);
 			// Exception que permite utilizada de getMostSpecificCause
 		} catch (DataAccessException e) {

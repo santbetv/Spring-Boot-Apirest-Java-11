@@ -23,6 +23,8 @@ public interface IClienteService {
 	
 	public List<Region> findAllRegiones();
 	
+	public Region buscarRegionXId(Long id);
+	
 	
 	
 }

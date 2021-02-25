@@ -2,7 +2,10 @@ package com.sbvdeveloper.apirest.entity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,14 +14,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -75,6 +76,20 @@ public class Cliente implements Serializable {
 	private Region region;
 	
 	
+	/**
+	 * mappedBy = nombre de atributo, fundamental para mapear  con el atributo de la contraparte
+	 */
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cliente", cascade = CascadeType.ALL)
+	private List<Factura> factura;
+	
+	
+	
+	
+	//Constructor
+	public Cliente() {
+		this.factura= new ArrayList<>();
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -137,8 +152,17 @@ public class Cliente implements Serializable {
 	}
 
 	
+	
 
 
+
+	public List<Factura> getFactura() {
+		return factura;
+	}
+
+	public void setFactura(List<Factura> factura) {
+		this.factura = factura;
+	}
 
 	@Override
 	public String toString() {

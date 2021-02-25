@@ -37,8 +37,11 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 		 * cors en peticion de cliente
 		 */
 		http.authorizeRequests()
-				.antMatchers(HttpMethod.GET, "/api/clientes", "/api/clientes/page/**", "/api/uploads/img/**", "/img")
-				.permitAll().anyRequest().authenticated().and().cors().configurationSource(corsConfigurationSource());
+				.antMatchers(HttpMethod.GET, "/api/clientes", "/api/clientes/page/**", "/api/uploads/img/**", "/img").permitAll()
+				.antMatchers("/api/clientes/{id}").permitAll()
+				.antMatchers("/api/facturas/**").permitAll()
+				.anyRequest().authenticated()
+				.and().cors().configurationSource(corsConfigurationSource());
 
 //		  .antMatchers(HttpMethod.GET, "/api/clientes/{id}").hasAnyRole("USER","ADMIN")//no requiere ROLE_ por
 //		  debajo se concatena .antMatchers(HttpMethod.POST, "/api/clientes/upload").hasAnyRole("USER","ADMIN")

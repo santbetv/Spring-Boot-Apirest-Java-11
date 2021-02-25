@@ -70,7 +70,7 @@ public class ClienteRestController {
 		return clienteService.findAll(pegeable);
 	}
 
-	@Secured({"ROLE_ADMIN","ROLE_USER"})//indico quien tiene autorizacion en perticion
+	//@Secured({"ROLE_ADMIN","ROLE_USER"})//indico quien tiene autorizacion en perticion
 	@GetMapping("/clientes/{id}")
 	public ResponseEntity<?> show(@PathVariable Long id) {
 		Cliente cliente = null;

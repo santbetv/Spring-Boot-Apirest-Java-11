@@ -37,8 +37,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 		 * cors en peticion de cliente
 		 */
 		http.authorizeRequests()
-				.antMatchers(HttpMethod.GET, "/api/clientes", "/api/clientes/page/**", "/api/uploads/img/**", "/img").permitAll()
-				.antMatchers("/api/clientes/{id}").permitAll()
+				.antMatchers(HttpMethod.GET, "/api/clientes", "/api/clientes/page/**", "/api/uploads/img/**", "/img/**").permitAll()
+				.antMatchers("/api/clientes/**").permitAll()
 				.antMatchers("/api/facturas/**").permitAll()
 				.anyRequest().authenticated()
 				.and().cors().configurationSource(corsConfigurationSource());

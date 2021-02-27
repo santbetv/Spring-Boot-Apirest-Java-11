@@ -44,13 +44,14 @@ public class Usuario implements Serializable {
 	
 
 	/**
-	 * Cada vez que elimine al usuario elimina su rol o roles Cada vez que guarde al
+	 * CascadeType.ALL = Cada vez que elimine al usuario elimina su rol o roles Cada vez que guarde al
 	 * usuario elimina su rol o roles
 	 * 
 	 */
 	// Se adiciona nombres en atributos de FK y forma unica por ids
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinTable(name = "usuarios_roles", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "role_id"), uniqueConstraints = {
+	@JoinTable(name = "usuarios_roles", joinColumns = @JoinColumn(name = "usuario_id"),
+	inverseJoinColumns = @JoinColumn(name = "role_id"), uniqueConstraints = {
 			@UniqueConstraint(columnNames = { "usuario_id", "role_id" }) })
 	private List<Role> roles;
 
@@ -94,7 +95,6 @@ public class Usuario implements Serializable {
 		this.roles = roles;
 	}
 	
-	
 
 	public String getNombre() {
 		return nombre;
@@ -120,15 +120,6 @@ public class Usuario implements Serializable {
 		this.email = email;
 	}
 
-	@Override
-	public String toString() {
-		return "Usuario [id=" + id + ", username=" + username + ", password=" + password + ", enabled=" + enabled
-				+ ", roles=" + roles + "]";
-	}
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -3035605612469588835L;
 
 }

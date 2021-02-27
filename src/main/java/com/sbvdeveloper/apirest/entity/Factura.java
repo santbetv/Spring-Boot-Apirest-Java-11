@@ -3,9 +3,11 @@ package com.sbvdeveloper.apirest.entity;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -16,9 +18,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Table(name = "Facturas")
+@Table(name = "facturas")
 public class Factura implements Serializable {
 
 	@Id
@@ -28,15 +34,17 @@ public class Factura implements Serializable {
 	private String observacion;
 	private LocalDate fecha;
 
+	@JsonIgnoreProperties(value = { "objetofacturas", "hibernateLazyInitializer", "handler" }, allowSetters = true)
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Cliente cliente;
 
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "factura_id") // le cambio el nombre a la llave FK
-	private List<ItemFactura> itemFactura;
+	@JoinColumn(name = "factura_id") // le cambio el nombre a la llave FK y que la agrege
+	private List<ItemFactura> items;
 
 	public Factura() {
-		itemFactura = new ArrayList<>();
+		items = new ArrayList<>();
 	}
 
 	public Long getId() {
@@ -70,6 +78,9 @@ public class Factura implements Serializable {
 	public void setFecha(LocalDate fecha) {
 		this.fecha = fecha;
 	}
+	
+	
+	
 
 	public Cliente getCliente() {
 		return cliente;
@@ -79,12 +90,12 @@ public class Factura implements Serializable {
 		this.cliente = cliente;
 	}
 
-	public List<ItemFactura> getItemFactura() {
-		return itemFactura;
+	public List<ItemFactura> getItems() {
+		return items;
 	}
 
-	public void setItemFactura(List<ItemFactura> itemFactura) {
-		this.itemFactura = itemFactura;
+	public void setItems(List<ItemFactura> items) {
+		this.items = items;
 	}
 
 	@PrePersist
@@ -95,16 +106,10 @@ public class Factura implements Serializable {
 	public Double getTotal() {
 		Double total = 0.00;
 
-		for (ItemFactura item : itemFactura) {
+		for (ItemFactura item : items) {
 			total += item.getImporte();
 		}
 		return total;
-	}
-
-	@Override
-	public String toString() {
-		return "Factura [id=" + id + ", descripcion=" + descripcion + ", observacion=" + observacion + ", fecha="
-				+ fecha + ", cliente=" + cliente + "]";
 	}
 
 	private static final long serialVersionUID = 3916668841073196769L;

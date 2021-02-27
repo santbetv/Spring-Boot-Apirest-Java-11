@@ -20,16 +20,6 @@ public class Role implements Serializable {
 	
 	@Column(unique = true, length = 20)
 	private String nombre;
-	
-	/**
-	 * Nombre del atributo de la otra clase, indicando mapeado por roles
-	 * para el ejemplo
-	 * @return
-	 */
-	/*@ManyToMany(mappedBy = "roles")
-	public Long getId() {
-		return id;
-	}*/
 
 	public void setId(Long id) {
 		this.id = id;
@@ -43,16 +33,6 @@ public class Role implements Serializable {
 		this.nombre = nombre;
 	}
 
-	@Override
-	public String toString() {
-		return "Role [id=" + id + ", nombre=" + nombre + "]";
-	}
-	
-	
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 4888093317731110608L;
 
 }

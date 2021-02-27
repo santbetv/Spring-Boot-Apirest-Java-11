@@ -42,13 +42,6 @@ public class Region implements Serializable {
 		this.id = id;
 	}
 
-	@Override
-	public String toString() {
-		return "Region [id=" + id + ", nombre=" + nombre + "]";
-	}
-
-
-
 	private static final long serialVersionUID = 6777535672693339671L;
 
 }

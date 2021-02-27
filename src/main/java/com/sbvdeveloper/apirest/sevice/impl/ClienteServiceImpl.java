@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sbvdeveloper.apirest.entity.Cliente;
+import com.sbvdeveloper.apirest.entity.Factura;
 import com.sbvdeveloper.apirest.entity.Region;
 import com.sbvdeveloper.apirest.repository.IClienteRepository;
+import com.sbvdeveloper.apirest.repository.IFacturaRepository;
 import com.sbvdeveloper.apirest.sevice.IClienteService;
 
 @Service
@@ -18,6 +20,10 @@ public class ClienteServiceImpl implements IClienteService {
 
 	@Autowired
 	private IClienteRepository clienteRepository;
+	
+	
+	@Autowired
+	private IFacturaRepository facturaRepository;
 
 	@Override
 	@Transactional(readOnly = true)//
@@ -69,6 +75,27 @@ public class ClienteServiceImpl implements IClienteService {
 		return clienteRepository.buscarRegionXId(id);
 	
 	}
+
+	@Override
+	@Transactional(readOnly = true)//
+	public Factura findFacturaById(Long id) {
+		return facturaRepository.findById(id).orElse(null);
+	}
+
+	@Override
+	@Transactional
+	public Factura saveFactura(Factura factura) {
+		return facturaRepository.save(factura);
+	}
+
+	@Override
+	@Transactional
+	public void deleteFacturaById(Long id) {
+		facturaRepository.deleteById(id);
+		
+	}
+	
+	
 	
 	
 	

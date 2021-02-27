@@ -57,14 +57,6 @@ public class Producto implements Serializable {
 	public void guardarFechaEnPreviamente() {
 		this.fecha = LocalDate.now();
 	}
-	
-
-	@Override
-	public String toString() {
-		return "Producto [id=" + id + ", nombre=" + nombre + ", precio=" + precio + ", fecha=" + fecha + "]";
-	}
-
-
 
 	private static final long serialVersionUID = -1862924069867439603L;
 

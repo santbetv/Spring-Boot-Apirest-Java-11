@@ -3,6 +3,7 @@ package com.sbvdeveloper.apirest.entity;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -16,6 +17,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -54,40 +57,38 @@ public class Cliente implements Serializable {
 	@Column(nullable = false, unique = true) // para que no se pueda enviar vacio, ni poder repetir correo sobre la db
 	private String email;
 
-	@NotNull(message ="no puede estar vacio")
+	@NotNull(message = "no puede estar vacio")
 	private LocalDateTime fecha;// Nuevos valores de Java8 en adelante
 
 	private String foto;
-	
-	
+
 	/**
 	 * FetchType.LAZY = Cada que se invoque region se realiza la carga
+	 * 
 	 * @JoinColumn = propiedad que da el nombre manual a la llave FK
-	 * @JsonIgnoreProperties = se genera una comunicacion de hibernate
-	 * se debe de excluir, genera errores al comunicarse con su tabla por 
-	 * su comunicacion (proxy)
+	 * @JsonIgnoreProperties = se genera una comunicacion de hibernate se debe de
+	 *                       excluir, genera errores al comunicarse con su tabla por
+	 *                       su comunicacion (proxy)
 	 * 
 	 */
-	
-	@NotNull(message="la región no puede ser vacia")
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="region_id")
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	@NotNull(message = "la región no puede ser vacia")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "region_id")
 	private Region region;
-	
-	
+
 	/**
-	 * mappedBy = nombre de atributo, fundamental para mapear  con el atributo de la contraparte
+	 * mappedBy = nombre de atributo, fundamental para mapear con el atributo de la
+	 * contraparte, el mismo que se coloca en @JsonIgnoreProperties
 	 */
+	@JsonIgnoreProperties(value = { "cliente", "hibernateLazyInitializer", "handler" }, allowSetters = true)
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cliente", cascade = CascadeType.ALL)
-	private List<Factura> factura;
-	
-	
-	
-	
-	//Constructor
+	private List<Factura> objetofacturas;
+
+	// Constructor
 	public Cliente() {
-		this.factura= new ArrayList<>();
+		this.objetofacturas = new ArrayList<>();
 	}
 
 	public Long getId() {
@@ -130,8 +131,6 @@ public class Cliente implements Serializable {
 		this.fecha = fecha;
 	}
 
-	
-	
 	public String getFoto() {
 		return foto;
 	}
@@ -139,9 +138,6 @@ public class Cliente implements Serializable {
 	public void setFoto(String foto) {
 		this.foto = foto;
 	}
-	
-	
-	
 
 	public Region getRegion() {
 		return region;
@@ -150,33 +146,19 @@ public class Cliente implements Serializable {
 	public void setRegion(Region region) {
 		this.region = region;
 	}
-
 	
 	
 
-
-
-	public List<Factura> getFactura() {
-		return factura;
+	public List<Factura> getObjetofacturas() {
+		return objetofacturas;
 	}
 
-	public void setFactura(List<Factura> factura) {
-		this.factura = factura;
-	}
-
-	@Override
-	public String toString() {
-		return "Cliente [id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", email=" + email + ", fecha="
-				+ fecha + ", foto=" + foto + ", region=" + region + "]";
+	public void setObjetofacturas(List<Factura> objetofacturas) {
+		this.objetofacturas = objetofacturas;
 	}
 
 
 
-
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -1614807044782598669L;
 
 }

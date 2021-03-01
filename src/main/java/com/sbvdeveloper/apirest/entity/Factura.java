@@ -34,6 +34,10 @@ public class Factura implements Serializable {
 	private String observacion;
 	private LocalDate fecha;
 
+	
+	/*
+	 * allowSetters = permitir setter 
+	 */
 	@JsonIgnoreProperties(value = { "objetofacturas", "hibernateLazyInitializer", "handler" }, allowSetters = true)
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Cliente cliente;

@@ -38,8 +38,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 		 */
 		http.authorizeRequests()
 				.antMatchers(HttpMethod.GET, "/api/clientes", "/api/clientes/page/**", "/api/uploads/img/**", "/img/**").permitAll()
-				.antMatchers("/api/clientes/**").permitAll()
-				.antMatchers("/api/facturas/**").permitAll()
+				/*.antMatchers("/api/clientes/**").permitAll()
+				.antMatchers("/api/facturas/**").permitAll()*/
 				.anyRequest().authenticated()
 				.and().cors().configurationSource(corsConfigurationSource());
 

@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.sbvdeveloper.apirest.entity.Cliente;
 import com.sbvdeveloper.apirest.entity.Factura;
+import com.sbvdeveloper.apirest.entity.Producto;
 import com.sbvdeveloper.apirest.entity.Region;
 
 /**
@@ -37,4 +38,6 @@ public interface IClienteService {
 	public Factura saveFactura(Factura factura);
 	
 	public void deleteFacturaById(Long id);
+	
+	public List<Producto> findProductoByNombre(String term);
 }
